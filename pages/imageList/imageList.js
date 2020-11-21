@@ -123,7 +123,6 @@ previewImage: function (e) {
      title: '正处理第'+(count+1)+'张',
    })
    var openUserId= util.getOpenId();
-   console.log("***********openUserId***************"+openUserId);
    var url='https://www.coolpov.com/uploadFile/upload';
    wx.uploadFile({
     filePath:that.data.imageFilesArray[count].path,

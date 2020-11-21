@@ -35,9 +35,8 @@ Page({
       typeCode:typeCode,
       count:count
     })
-
-     //需要双面识别情况下判断是否需要双面识别
-     if(count ==2 ){
+    //需要双面识别情况下判断是否需要双面识别
+    if(count ==2 ){
       wx.showModal({
         title: '识别模式提示',
         content: '需要双面或双页识别吗？',
@@ -130,7 +129,6 @@ Page({
       })
 
       var openUserId= util.getOpenId();
-      console.log("***********openUserId***************"+openUserId);
       this.ctx.takePhoto({
         quality : "high",
         success: (res) => {

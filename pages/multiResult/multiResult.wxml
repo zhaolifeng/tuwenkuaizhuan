@@ -47,9 +47,10 @@
       </view> 
    </view>
 </view>
+<explain id="explain"  isShow="{{isShow}}"></explain>
 <editorMode id="editorMode" bind:updateText="editorText"></editorMode>
 <sendMailMode id="sendMailMode" bind:mailText="sendMail"></sendMailMode>
 <operatorMode id="operatorMode" bind:toOperater="toOperater"></operatorMode>
 <saveResult id="saveResult" bind:setTitle="setTitle"></saveResult>
-<shareMode id="share" ></shareMode> 
-<mytoast id="mytoast"></mytoast>
+<shareMode id="share" ></shareMode>
+
