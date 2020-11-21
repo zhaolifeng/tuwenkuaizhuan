@@ -1,0 +1,27 @@
+<!--pages/component/exportfile/exportfile.wxml-->
+<!-- <view  class="exportfile" hidden="{{zindex}}">
+   <view class="fileset">
+       文件名
+       <input name="fileName"/> 
+       件格式
+       <picker-view>
+          <picker bindchange="" value="{{index}}" range="{{array}}">
+            <view class="picker">
+              当前选择：{{array[index]}} 
+            </view>
+          </picker>
+       </picker-view>
+ 
+   </view>
+</view> -->
+
+ <!-- <view class="container">
+ <view class="float" hidden='{{viewShowed}}'>
+ <view class='floatContent'>
+  <view class='floatText'>
+  <text>获取微信授权信息</text>
+  <button open-type="getUserInfo" bindgetuserinfo="getUserInfo">去设置</button>
+  </view>
+ </view>
+ </view>
+</view> -->

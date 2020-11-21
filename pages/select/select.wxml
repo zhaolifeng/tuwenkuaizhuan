@@ -1,0 +1,29 @@
+<!--pages/select/select.wxml-->
+<view class="VerticalBox">
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:100vh">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" style="border-bottom:solid 1px #ccc;letter-spacing: 1px;" wx:for="{{list}}" wx:key="a" bindtap='tabSelect' data-id="{{index}}">
+      {{item.name}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:100vh" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+    <view  style="min-height:100vh;" wx:for="{{list}}" wx:key="a" id="main-{{index}}">
+          <view class='cu-bar'>
+            <view class='action'>
+                <text class='icon-title text-green'>{{item.name}} </text></view>
+            </view>
+  
+            <view class="contenList">
+              <block wx:for="{{item.titles}}" wx:for-item="twodata" wx:key="index0">
+                <view class="iconfunction"  bindtap="check" data-gid="{{twodata.code}}">
+                  <view class="icon">
+                    <image  src="{{twodata.image}}"></image>
+                  </view>
+                  <view class="tite">
+                    <text>{{twodata.name}}</text>
+                  </view>
+                </view>
+              </block>      
+            </view> 
+    </view>   
+  </scroll-view>
+</view>

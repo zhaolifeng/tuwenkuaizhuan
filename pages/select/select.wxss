@@ -1,0 +1,100 @@
+/* pages/select/select.wxss */
+.VerticalNav.nav {
+  width: 200rpx;
+  white-space: initial;
+}
+ 
+.VerticalNav.nav .cu-item {
+  width: 100%;
+  text-align: center;
+  background-color: #fff;
+  margin: 0;
+  border: none;
+  height: 50px;
+  position: relative;
+ padding-top:25px;
+ font-weight:520;
+ color: rgb(29, 33, 36);
+ font-size: 17px;
+}
+ 
+.VerticalNav.nav .cu-item.cur {
+  background-color: #e5eaf0;
+}
+.VerticalNav.nav .cu-item.cur::after {
+  content: "";
+  width: 8rpx;
+  height: 30rpx;
+  border-radius: 10rpx 0 0 10rpx;
+  position: absolute;
+  background-color: currentColor;
+  top: 0;
+  right: 0rpx;
+  bottom: 0;
+  margin: auto;
+
+}
+.VerticalBox{
+  display: flex;
+}
+.VerticalMain{
+  background-color: #f1f1f1;
+  color: rgb(29, 33, 36);
+  font-size: 17px;
+
+}
+.VerticalBox .cu-bar{
+  background-color:#e5eaf0;
+  height:40px;
+   position: sticky;
+  left: 0px;
+  top: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.action{
+  padding-left:15px;
+  line-height: 2em;
+  
+}
+
+.contenList{
+  width: 98%;
+  display: flex;
+  justify-content: start;
+  flex-flow: wrap;
+  align-content: flex-start;
+}
+.iconfunction {
+  margin: 5px 5px;
+  display: flex;
+  flex-direction:column;
+  justify-content: start;
+  align-items: center;
+  width:29.2%;
+  height: auto;
+  max-width:100px; 
+
+}
+.icon{
+  margin: 10rpx;
+  height: 90rpx;
+  width: 90rpx;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.icon image{
+  height: 50px;
+  width: 50px;
+}
+
+.tite{
+  width: 130rpx;
+  text-align: center;
+  color: rgb(29, 33, 36);
+  font-size: 16px;
+  font-weight:normal;
+}
