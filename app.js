@@ -22,9 +22,10 @@ App({
             },
             success (res) {             
               var resData=res.data.data;
-              if(res.statusCode == 200){   
-                  //  console.log("*****login*******"+JSON.stringify(res.data)) 
+              if(res.data.status == 200){   
+                   console.log("*****login*******"+JSON.stringify(res.data)) 
                     var openidSrc=resData.openid
+                    console.log("*****openidSrc*******"+openidSrc) 
                     var openid= wx.getStorageSync('openid')
                     if(openid == "" || openid == null || openid == undefined ||openidSrc !=openid){
                       wx.setStorageSync('openid', openidSrc)

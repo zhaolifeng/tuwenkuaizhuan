@@ -19,11 +19,9 @@ Page({
     var statusBarHeight= wx.getSystemInfoSync().statusBarHeight
     var windowHeight=wx.getSystemInfoSync().windowHeight;
     this.data.mainHeight=(windowHeight-statusBarHeight-44);
-    let explain =wx.getStorageSync("explain")
-    let isShow=true
-    if(explain == "" || explain == null || explain== undefined){
-
-      isShow=false
+    let isShow =wx.getStorageSync("explain")
+    if(typeof(isShow) != "boolean" ){
+      isShow=true
     }
     eventChannel.once('acceptDataFromOpenerPage', function(data) {
       let temp=data.data;

@@ -39,7 +39,7 @@
       </view> 
    </view>
 </view>
-<explain id="explain"  isShow="{{isShow}}"></explain>
+<explain id="explain"   wx:if="{{isShow}}"></explain>
 <editorMode id="editorMode" bind:updateText="editorText"></editorMode>
 <sendMailMode id="sendMailMode" bind:mailText="sendMail"></sendMailMode>
 <operatorMode id="operatorMode" showKeys="{{showKeys}}" bind:toOperater="toOperater"></operatorMode>
