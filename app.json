@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/home/home",
+    "pages/select/select",
+    "pages/check/check",
+    "pages/imageList/imageList",
+    "pages/groupMultiResult/groupMutliResult",
+    "pages/multiResult/multiResult",
+    "pages/viewResult/viewResult"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "pages/image/select/changyong.png",
+        "selectedIconPath": "pages/image/select/unchangyong.png",
+        "text": "常用"
+      },
+      {
+        "pagePath": "pages/select/select",
+        "iconPath": "pages/image/select/unfenlei.png",
+        "selectedIconPath": "pages/image/select/fenlei.png",
+        "text": "通用"
+      },
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "/pages/image/select/unmy.png",
+        "selectedIconPath": "pages/image/select/my.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
