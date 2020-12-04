@@ -14,28 +14,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    var util = require('../../utils/util.js');
-    var time = util.formatTime(new Date());
-    
+    let funkey = wx.getStorageSync("fun100000")
     var openUserId= login.getOpenId();
     console.log("***************openUserId**************"+openUserId)
-    if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+        hasUserInfo: true,
+        funkey:funkey,
+        typeCode:"100000"
       })
-    } else{
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-     
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    }
   },
 
   /**
@@ -49,7 +36,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log("*****************"+JSON.stringify(this.data))
   },
 
   /**
@@ -93,25 +79,31 @@ Page({
     url: '/pages/select/select',
   })
   },
-
   check:function(event){
     console.log(event.currentTarget.dataset.gid);
     let gid=event.currentTarget.dataset.gid;
-    wx.navigateTo({
-      url: '/pages/check/check?typeCode='+gid
-    })
+    if(gid.includes('005002-1')){
+      wx.navigateTo({
+        url: '/pages/danyeDeal/danyeDeal?typeCode='+gid
+      })
+    }else{
+      wx.navigateTo({
+        url: '/pages/check/check?typeCode='+gid
+      })
+    }
+
   },
 
   showtoast:function () {
     // var sendMailMode=this.selectComponent("#sendMailMode");
     // sendMailMode.sendMail();
 
-    var saveResult=this.selectComponent("#saveResult");
-    saveResult.saveResult();
-      // wx.navigateTo({
-      //   url: '/pages/groupMultiResult/groupMutliResult'
-      //   // url: '/pages/multiResult/multiResult'
-      // })
+    // var saveResult=this.selectComponent("#saveResult");
+    // saveResult.saveResult();
+      wx.navigateTo({
+        url: '/pages/fanyi/fanyi'
+        // url: '/pages/multiResult/multiResult'
+      })
 
   }
 })

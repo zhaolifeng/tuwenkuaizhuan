@@ -21,15 +21,15 @@ Page({
     var statusBarHeight= wx.getSystemInfoSync().statusBarHeight
     var windowHeight=wx.getSystemInfoSync().windowHeight;
     this.data.mainHeight=(windowHeight-statusBarHeight-44)
-    let isShow =wx.getStorageSync("explain")
-    if(typeof(isShow) != "boolean" ){
-      isShow=true
+    let explain =wx.getStorageSync("explain")
+    let isShow=true
+    if(explain == "" || explain == null || explain== undefined){
+      isShow=false
     }
-
-   
     eventChannel.once('acceptDataFromOpenerPage', function(data) {
       let temp=data.data;
       let backCount=data.backCount
+      console.log("$$$$@@@@@@@@@$$$backCount$$$$$$$$$"+backCount)
       that.setData({
         result:temp,
         backCount: backCount,
@@ -85,7 +85,12 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    console.log("--------fengxiang----------------")
+    return {
+      title: '图文快转',
+      desc: '图文快转',
+      path: '/pages/index/index'
+    }
   },
   editorText:function(e){
       var infos=e.detail.message.split(":!|#");
@@ -248,7 +253,7 @@ setTitle:function(e){
     data[0]=this.data.result[index]
   }
   var time = util.formatTime(new Date());
-  var titleObje={"title":title,"dateTime":time};
+  var titleObje={"title":title,"dateTime":time,type:"piaoju"};
   var historyIndex=wx.getStorageSync('historyIndex');
   var hisResults=wx.getStorageSync('hisResults');
       historyIndex.unshift(titleObje)

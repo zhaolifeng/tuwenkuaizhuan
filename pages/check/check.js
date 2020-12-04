@@ -7,6 +7,7 @@ Page({
    */
   data: {
     maxCount:8,
+    prePath:"",
     newData:{path:[],response:[]},
     mode:false, //单选多选模式 f
     takePhones:0,  //拍照数量
@@ -27,13 +28,28 @@ Page({
       count=temp[1];
       title=temp[2] ;
     }
+    if(typeCode.includes('0010') || typeCode.includes('0020') ||typeCode.includes('0030')){
+      this.data.type="kazhengpiaoju"//票据类型的
+      this.data.prePath="https://www.coolpov.com/uploadFile/upload"
+    }else if(typeCode.includes('0040')){
+      this.data.type="wenben"//文本类型的
+      this.data.prePath="https://www.coolpov.com/uploadFile/upload"
+    }else{
+      this.data.type="fanyi"//翻译
+      this.data.prePath="https://www.coolpov.com/uploadFile/uploadFanyi"
+    }
+   
     wx.setNavigationBarTitle({
       title: title,
     })
     let that=this;
+    let funkey = wx.getStorageSync("fun"+typeCode)
+    console.log("***********funkey***************"+funkey)
     that.setData({
       typeCode:typeCode,
-      count:count
+      count:count,
+      type:this.data.type,
+      funkey:funkey
     })
     //需要双面识别情况下判断是否需要双面识别
     if(count ==2 ){
@@ -133,12 +149,11 @@ Page({
         quality : "high",
         success: (res) => {
           var imagePath=res.tempImagePath;
-          var url='https://www.coolpov.com/uploadFile/upload';
+          var url=that.data.prePath;
           wx.uploadFile({
             filePath:imagePath,
             name: 'file',
-            formData:{"indexType":typeCode,"openUserId":openUserId},
-            
+            formData:{"indexType":typeCode,"openUserId":openUserId,"from":that.data.from,"to":that.data.to},
             url: url,
             success(res){
               wx.hideLoading();
@@ -183,57 +198,54 @@ Page({
                   }     
               }else{
                 that.data.newData.path=imagePath;
-                that.data.newData.response=newData 
+                that.data.newData.response=newData
+                let path= that.data.type == 'wenben'||that.data.type == 'fanyi' ?'/pages/generalResult/generalResult':'/pages/multiResult/multiResult'
                 wx.navigateTo({
-                  url: '/pages/multiResult/multiResult',
+                  url: path,
                   success:function(res){
                         // 通过eventChannel向被打开页面传送数据
                        res.eventChannel.emit('acceptDataFromOpenerPage', { data:[that.data.newData]})
                   }
                 })
               }
-            },
-            fail(res){          
-            },
-            complete(res){
             }
           })
         }
       });
     }
   },
-  startDeal:function(){ //开始批量处理拍的照片
-    var that=this;
-    var imageFiles=that.data.takeImageFiles;
-    var redirectPath;
-    var finalFiles=[];
-    var index=0;
-    if(this.data.count==2){
-      redirectPath="/pages/groupMultiResult/groupMutliResult?typeCode=";
-      var tempObj=[];
-      for(var i=0;i<imageFiles.length;i++){
-        if(i%2==1 && i/2 <= (imageFiles.length-1)/2){
-          tempObj[1]=imageFiles[i];
-          finalFiles[index]=tempObj;
-          tempObj=[];
-          index++;
-        }
-        if(i%2==0 && i/2 <= (imageFiles.length-1)/2){
-          tempObj[0]=imageFiles[i];
-        }                  
-      }
-      imageFiles=finalFiles;
-    }else{
-      redirectPath="/pages/imageList/imageList?typeCode=";
-    }
-    wx.navigateTo({
-      url: redirectPath+that.data.typeCode,
-      success:function(res){
-            // 通过eventChannel向被打开页面传送数据
-           res.eventChannel.emit('acceptDataFromOpenerPage', {"imageFiles":imageFiles})
-      }
-    })
-  },
+  // startDeal:function(){ //开始批量处理拍的照片
+  //   var that=this;
+  //   var imageFiles=that.data.takeImageFiles;
+  //   var redirectPath;
+  //   var finalFiles=[];
+  //   var index=0;
+  //   if(this.data.count==2){
+  //     redirectPath="/pages/groupMultiResult/groupMutliResult?typeCode=";
+  //     var tempObj=[];
+  //     for(var i=0;i<imageFiles.length;i++){
+  //       if(i%2==1 && i/2 <= (imageFiles.length-1)/2){
+  //         tempObj[1]=imageFiles[i];
+  //         finalFiles[index]=tempObj;
+  //         tempObj=[];
+  //         index++;
+  //       }
+  //       if(i%2==0 && i/2 <= (imageFiles.length-1)/2){
+  //         tempObj[0]=imageFiles[i];
+  //       }                  
+  //     }
+  //     imageFiles=finalFiles;
+  //   }else{
+  //     redirectPath="/pages/imageList/imageList?typeCode=";
+  //   }
+  //   wx.navigateTo({
+  //     url: redirectPath+that.data.typeCode+"&type="+this.data.type,
+  //     success:function(res){
+  //           // 通过eventChannel向被打开页面传送数据
+  //          res.eventChannel.emit('acceptDataFromOpenerPage', {"imageFiles":imageFiles})
+  //     }
+  //   })
+  // },
   chooseImages:function (e) {
     var that=this;
     var count=this.data.count;
@@ -248,15 +260,13 @@ Page({
       success (res) {
         console.log(res.tapIndex)
         let index=res.tapIndex;
-        if(index==0){
-          that.mutliImageUpload();
-        } 
-        if(index==1){
-          that.mutliMessageImageUpload();
-        }
-      },
-      fail (res) {
-        console.log(res.errMsg)
+        that.mutliImageUpload();
+        // if(index==0){
+        //   that.mutliImageUpload();
+        // } 
+        // if(index==1){
+        //   that.mutliMessageImageUpload();
+        // }
       }
     })
   },
@@ -294,50 +304,60 @@ Page({
                 url: redirectPath+that.data.typeCode,
                 success:function(res){
                       // 通过eventChannel向被打开页面传送数据
-                     res.eventChannel.emit('acceptDataFromOpenerPage', {"imageFiles":imageFiles})
+                     res.eventChannel.emit('acceptDataFromOpenerPage', {"imageFiles":imageFiles,type:that.data.type,from:that.data.from,to:that.data.to})
                 }
               })
             }     
     });
-  },
-  mutliMessageImageUpload:function(){
-    var that = this;
-    var takeCount=this.data.count;
-    wx.chooseMessageFile({
-      count: that.data.maxCount,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function(res){
-        var imageFiles=res.tempFiles;
-        var redirectPath;
-        var finalFiles=[];
-        var index=0;
-        if(takeCount==2){
-          redirectPath="/pages/groupMultiResult/groupMutliResult?typeCode=";
-          var tempObj=[];
-          for(var i=0;i<imageFiles.length;i++){
-            if(i%2==1 && i/2 <= (imageFiles.length-1)/2){
-              tempObj[1]=imageFiles[i];
-              finalFiles[index]=tempObj;
-              tempObj=[];
-              index++;
-            }
-            if(i%2==0 && i/2 <= (imageFiles.length-1)/2){
-              tempObj[0]=imageFiles[i];
-            }                  
-          }
-          imageFiles=finalFiles;
-        }else{
-          redirectPath="/pages/imageList/imageList?typeCode=";
-        }
-        wx.navigateTo({
-          url: redirectPath+that.data.typeCode,
-          success:function(res){
-                // 通过eventChannel向被打开页面传送数据
-               res.eventChannel.emit('acceptDataFromOpenerPage', {"imageFiles":imageFiles})
-          }
-        })
-      }       
-    });
   }
+  ,
+  setLan:function(e){
+    console.log("$$$$$$$$$$$$$$$$$"+JSON.stringify(e.detail.from))
+    console.log("$$$$$$$$$$$$$$$$$"+JSON.stringify(e.detail.to))
+    this.setData({
+      from:e.detail.from,
+      to:e.detail.to
+    })
+  }
+  // ,
+  // mutliMessageImageUpload:function(){
+  //   var that = this;
+  //   var takeCount=this.data.count;
+  //   wx.chooseMessageFile({
+  //     count: that.data.maxCount,
+  //     sizeType: ['original', 'compressed'],
+  //     sourceType: ['album', 'camera'],
+  //     success: function(res){
+  //       var imageFiles=res.tempFiles;
+  //       var redirectPath;
+  //       var finalFiles=[];
+  //       var index=0;
+  //       if(takeCount==2){
+  //         redirectPath="/pages/groupMultiResult/groupMutliResult?typeCode=";
+  //         var tempObj=[];
+  //         for(var i=0;i<imageFiles.length;i++){
+  //           if(i%2==1 && i/2 <= (imageFiles.length-1)/2){
+  //             tempObj[1]=imageFiles[i];
+  //             finalFiles[index]=tempObj;
+  //             tempObj=[];
+  //             index++;
+  //           }
+  //           if(i%2==0 && i/2 <= (imageFiles.length-1)/2){
+  //             tempObj[0]=imageFiles[i];
+  //           }                  
+  //         }
+  //         imageFiles=finalFiles;
+  //       }else{
+  //         redirectPath="/pages/imageList/imageList?typeCode=";
+  //       }
+  //       wx.navigateTo({
+  //         url: redirectPath+that.data.typeCode,
+  //         success:function(res){
+  //               // 通过eventChannel向被打开页面传送数据
+  //              res.eventChannel.emit('acceptDataFromOpenerPage', {"imageFiles":imageFiles})
+  //         }
+  //       })
+  //     }       
+  //   });
+  // }
 })
