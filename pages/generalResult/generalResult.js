@@ -88,7 +88,8 @@ Page({
     return {
       title: '图文快转',
       desc: '图文快转',
-      path: '/pages/index/index'
+      path: '/pages/index/index',
+      imageUrl:"/pages/image/select/share.png"
     }
   },
   editorText:function(e){
@@ -210,7 +211,8 @@ sendMail:function(e){
       title:"识别结果",
       recipientMail:mailAddr,
       content:copyData,
-      openUserId:openUserId
+      openUserId:openUserId,
+      subject:wx.getStorageSync('appName')
     },
     success (res) {
       wx.showToast({
